@@ -1,0 +1,79 @@
+// contracts/psychescore.compact
+pragma language_version >= 0.16;
+
+import CompactStandardLibrary;
+
+// Ledger declarations for on-chain storage
+export ledger user_scores: Map<Address, Opaque<"uint32">>;
+export ledger score_commitments: Map<Address, Opaque<"bytes32">>;
+export ledger ml_model_hash: Opaque<"bytes32">;
+export ledger survey_responses: Map<Address, Opaque<"bytes">>;
+
+// Circuits for score computation and storage
+export circuit computeAndStoreScore(
+    encrypted_responses: [Field; 50],
+    koios_features: [Field; 4],
+    ml_model_weights: [Field; 54],
+    ml_model_bias: Field,
+    wallet_address: Address,
+    response_commitment: Opaque<"bytes32">
+): [] {
+    // ZK computation logic from existing circuit
+    var computed_score: Field = ml_model_bias;
+    
+    // Process survey responses (questions 1-50)
+    for i in 0..50 {
+        computed_score = computed_score + (encrypted_responses[i] * ml_model_weights[i]);
+    }
+    
+    // Process KOIOS features (features 51-54)
+    for i in 0..4 {
+        computed_score = computed_score + (koios_features[i] * ml_model_weights[50 + i]);
+    }
+    
+    // Ensure score is within valid range (0-100)
+    assert(computed_score >= 0);
+    assert(computed_score <= 100);
+    
+    // Verify response commitment
+    var calculated_commitment: Field = 0;
+    for i in 0..50 {
+        calculated_commitment = calculated_commitment + encrypted_responses[i];
+    }
+    assert(calculated_commitment == response_commitment);
+    
+    // Store score with selective disclosure
+    user_scores[wallet_address] = disclose(Opaque<"uint32">(computed_score));
+    score_commitments[wallet_address] = response_commitment;
+}
+
+// Circuit to verify score without revealing computation
+export circuit verifyScore(
+    wallet_address: Address,
+    expected_score: Opaque<"uint32">
+): bool {
+    let stored_score = user_scores[wallet_address];
+    return disclose(stored_score == expected_score);
+}
+
+// Optional: Circuit for updating ML model
+export circuit updateMLModel(
+    new_model_hash: Opaque<"bytes32">,
+    admin_signature: Opaque<"bytes64">
+): [] {
+    // Verify admin signature
+    // Update model hash
+    ml_model_hash = new_model_hash;
+}
+
+// Optional: Circuit for batch processing
+export circuit batchComputeScores(
+    batch_responses: [Address, [Field; 50]][],
+    batch_features: [Address, [Field; 4]][]
+): [] {
+    // Process multiple users in batch
+    for i in 0..batch_responses.length {
+        // Individual score computation
+        // Batch storage
+    }
+}

@@ -1,0 +1,30 @@
+# Midnight Network Development Environment
+FROM node:20-alpine
+
+# Install dependencies
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    git \
+    curl \
+    bash
+
+# Install Compact compiler
+RUN curl --proto '=https' --tlsv1.2 -LsSf https://github.com/midnightntwrk/compact/releases/download/compact-v0.2.0/compact-installer.sh | sh
+
+# Add Compact to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Set working directory
+WORKDIR /app
+
+# Copy project files
+COPY . .
+
+# Install project dependencies
+RUN cd psychescore-mn && npm install
+
+# Expose ports
+EXPOSE 3000 5000 6300
+
+CMD ["sh", "-c", "cd psychescore-mn && npm run dev"]
