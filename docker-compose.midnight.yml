@@ -1,0 +1,56 @@
+services:
+  # Midnight Network App Development Environment
+  mn-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.midnight
+    volumes:
+      - .:/app
+      - /app/psychescore-mn/node_modules
+    ports:
+      - "3000:3000"  # Frontend dev server
+      - "5000:5000"  # Backend API
+    environment:
+      - NODE_ENV=development
+      - MIDNIGHT_NETWORK=testnet
+    command: sh -c "cd psychescore-mn && npm run dev"
+    depends_on:
+      - proof-server
+
+  # Midnight Proof Server
+  proof-server:
+    image: midnightnetwork/proof-server:latest
+    ports:
+      - "6300:6300"
+    command: midnight-proof-server --network testnet
+    environment:
+      - MIDNIGHT_NETWORK=testnet
+
+  # Backend API Service
+  backend:
+    build:
+      context: ./psychescore/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:5000"
+    volumes:
+      - ./psychescore/backend:/app
+      - ./psychescore/ml-model:/app/ml-model
+    environment:
+      - FLASK_ENV=development
+      - MIDNIGHT_PROOF_SERVER_URL=http://proof-server:6300
+      - MN_APP_PATH=/app/psychescore-mn
+    command: gunicorn --bind 0.0.0.0:5000 --workers 4 app:app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - proof-server
+      - mn-app
+
+volumes:
+  mn-app-data:
+  proof-server-data:

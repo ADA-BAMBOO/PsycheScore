@@ -1,0 +1,506 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0f172a;
+  color: #f8fafc;
+  line-height: 1.6;
+}
+
+/* App container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background-color: #1e293b;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #334155;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Wallet Card Styles */
+.wallet-card {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.status-section {
+  margin-bottom: 1rem;
+}
+
+.status-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.text-green-400 {
+  color: #4ade80;
+}
+
+.text-red-400 {
+  color: #f87171;
+}
+
+.address-section {
+  margin-bottom: 1rem;
+}
+
+.address-text {
+  font-family: monospace;
+  background-color: #0f172a;
+  padding: 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+  font-size: 0.875rem;
+}
+
+.action-section {
+  display: flex;
+  gap: 1rem;
+}
+
+.connect-btn, .disconnect-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.connect-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.connect-btn:hover {
+  background-color: #2563eb;
+}
+
+.disconnect-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.disconnect-btn:hover {
+  background-color: #dc2626;
+}
+
+/* PsycheScore DApp Styles */
+.psychescore-dapp {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.psychescore-dapp h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.survey-section {
+  margin-top: 1.5rem;
+}
+
+.survey-section h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.survey-section button {
+  background-color: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.survey-section button:hover {
+  background-color: #7c3aed;
+}
+
+/* Survey Component Styles */
+.survey-component {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #1e293b;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+}
+
+.survey-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.survey-header h3 {
+  color: #f8fafc;
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+}
+
+.survey-header p {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #334155;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #8b5cf6;
+  transition: width 0.3s ease;
+}
+
+.question-section {
+  margin-bottom: 30px;
+}
+
+.question-section h4 {
+  color: #f8fafc;
+  margin-bottom: 20px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.response-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.response-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.response-option:hover {
+  border-color: #8b5cf6;
+  background: #1e293b;
+}
+
+.response-option input {
+  margin-right: 12px;
+}
+
+.response-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.response-value {
+  font-weight: bold;
+  color: #8b5cf6;
+  min-width: 20px;
+}
+
+.response-text {
+  color: #f8fafc;
+}
+
+.response-option input:checked + .response-label .response-value {
+  color: #7c3aed;
+}
+
+.response-option input:checked + .response-label .response-text {
+  font-weight: 600;
+}
+
+.survey-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nav-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prev-button {
+  background: #64748b;
+  color: white;
+}
+
+.prev-button:hover:not(:disabled) {
+  background: #475569;
+}
+
+.next-button, .submit-button {
+  background: #8b5cf6;
+  color: white;
+}
+
+.next-button:hover:not(:disabled),
+.submit-button:hover:not(:disabled) {
+  background: #7c3aed;
+}
+
+.nav-button:disabled {
+  background: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: #7f1d1d;
+  color: #fecaca;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #ef4444;
+}
+
+/* Survey Results Styles */
+.survey-results {
+  margin-top: 1.5rem;
+}
+
+.survey-results h3 {
+  color: #4ade80;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.score-display {
+  background: #0f172a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  margin-bottom: 1rem;
+}
+
+.score-display h4 {
+  color: #f8fafc;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.score-display p {
+  color: #94a3b8;
+}
+
+.score-breakdown {
+  background: #0f172a;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  margin-bottom: 1rem;
+}
+
+.score-breakdown h5 {
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.score-breakdown ul {
+  list-style: none;
+  padding: 0;
+}
+
+.score-breakdown li {
+  color: #94a3b8;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid #334155;
+}
+
+.score-breakdown li:last-child {
+  border-bottom: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.submit-blockchain {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-blockchain:hover {
+  background: #059669;
+}
+
+.retake-survey {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retake-survey:hover {
+  background: #7c3aed;
+}
+
+/* Verification Section Styles */
+.verification-section {
+  background: #0f172a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  margin-bottom: 1.5rem;
+}
+
+.verification-section h3 {
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.verification-section p {
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.verify-blockchain {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.verify-blockchain:hover {
+  background: #2563eb;
+}
+
+.verification-result {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid;
+}
+
+.verification-result.verified {
+  background: #064e3b;
+  border-color: #10b981;
+}
+
+.verification-result.not.found {
+  background: #7f1d1d;
+  border-color: #ef4444;
+}
+
+.verification-result.verifying {
+  background: #1e293b;
+  border-color: #3b82f6;
+}
+
+.verification-result.error {
+  background: #7f1d1d;
+  border-color: #ef4444;
+}
+
+.verification-result h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.verification-details {
+  margin-top: 1rem;
+}
+
+.verification-details p {
+  margin-bottom: 0.5rem;
+  color: #f8fafc;
+}
+
+.score-details {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.score-details p {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.score-details strong {
+  color: #8b5cf6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-main {
+    padding: 1rem;
+  }
+  
+  .action-section {
+    flex-direction: column;
+  }
+  
+  .wallet-card, .psychescore-dapp {
+    padding: 1rem;
+  }
+  
+  .verification-section {
+    padding: 1rem;
+  }
+}

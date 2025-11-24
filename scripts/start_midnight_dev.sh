@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Midnight Network Development Environment Startup Script
+# This script builds and starts the complete Docker-based development environment
+
+echo "🚀 Starting Midnight Network Development Environment..."
+echo "========================================================"
+
+# Check if Docker is running
+if ! docker info > /dev/null 2>&1; then
+    echo "❌ Docker is not running. Please start Docker Desktop first."
+    exit 1
+fi
+
+echo "✅ Docker is running"
+
+# Build and start the environment
+echo "📦 Building and starting Docker containers..."
+docker-compose -f ../docker-compose.midnight.yml up --build -d
+
+# Wait for services to start
+echo "⏳ Waiting for services to initialize..."
+sleep 10
+
+# Check service status
+echo "🔍 Checking service status..."
+docker-compose -f ../docker-compose.midnight.yml ps
+
+echo ""
+echo "🎉 Midnight Network Development Environment is ready!"
+echo ""
+echo "📱 Access Points:"
+echo "   Frontend:      http://localhost:3000"
+echo "   Backend API:   http://localhost:8000" 
+echo "   Proof Server:  http://localhost:6300"
+echo ""
+echo "🔧 Development Commands:"
+echo "   View logs:     docker-compose -f ../docker-compose.midnight.yml logs -f"
+echo "   Stop services: docker-compose -f ../docker-compose.midnight.yml down"
+echo "   Restart:       docker-compose -f ../docker-compose.midnight.yml restart"
+echo ""
+echo "💡 Next Steps:"
+echo "   1. Configure Lace wallet to use local proof server (http://localhost:6300)"
+echo "   2. Get test tokens from Midnight Testnet Faucet"
+echo "   3. Test the PsycheScore DApp functionality"

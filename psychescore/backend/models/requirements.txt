@@ -1,0 +1,6 @@
+pandas
+scikit-learn
+koios_api
+numpy
+pycardano
+requests

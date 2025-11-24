@@ -1,0 +1,14 @@
+{
+  "address": "addr1qxy...",
+  "score": 54.29,
+  "timestamp": 1762614679,
+  "oracle_vkey": "5820aa9b34dc5c3006c342a17475318b156e34289c005a1ec4d47e75fc6c42c0ad34",
+  "model_version": "v1.0",
+  "koios_data": {
+    "tx_count": 258,
+    "avg_tx_size_ada": 54.8,
+    "days_staked": 228,
+    "tx_freq_daily": 0.48
+  },
+  "sig": "2907773d21b292d2ff0e333ced1e303f5956b48c67b5f72b488c829704d65c38eb487a8430c3028ffda1193bdc7fadd390171b8135e8d3aec970941f3cf8ca0a"
+}
