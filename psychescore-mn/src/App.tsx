@@ -1,41 +1,56 @@
-import React, { useState } from 'react';
-import WalletCard from './components/WalletCard';
-import PsycheScoreDApp from './components/PsycheScoreDApp';
+import React, { useState } from "react";
+import WalletCard from "./components/WalletCard";
+import logoWhite from "./publish/img/psylogo_white.png";
+import imgLace from "./publish/img/lace.png";
+import imgYoroi from "./publish/img/yoroi.png";
+import imgMidnight from "./publish/img/midnight.png";
+
+
+type SupportedWallet = "lace";
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
-  const handleConnect = async () => {
+  // 2. Thêm state để quản lý việc Ẩn/Hiện Popup
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleConnect = async (wallet: SupportedWallet) => {
+    setIsModalOpen(false);
     let connected = false;
     let address = null;
-    
+
     try {
-      // Check if Midnight Lace wallet is available
-      if (!window.midnight?.mnLace) {
-        console.error("Midnight Lace wallet not detected. Please install the Midnight Lace wallet browser extension to connect.");
-        alert("Midnight Lace wallet not detected. Please install the Midnight Lace wallet browser extension to connect.");
-        return;
-      }
+      switch (wallet) {
+        case "lace": {
+          if (!window.midnight?.mnLace) {
+            alert(
+              "Lace wallet not detected. Please install the Lace browser extension to connect."
+            );
+            return;
+          }
 
-      // Authorize DApp with Midnight Lace wallet
-      const connectorAPI = await window.midnight.mnLace.enable();
-
-      // Check if DApp is authorized
-      const isEnabled = await window.midnight.mnLace.isEnabled();
-      if (isEnabled) {
-        connected = true;
-        console.log("Connected to the wallet:", connectorAPI);
-
-        // Get wallet state including address
-        const state = await connectorAPI.state();
-        address = state.address;
-      } else {
-        alert("Wallet connection was not authorized. Please approve the connection request in your wallet.");
+          const connectorAPI = await window.midnight.mnLace.enable();
+          const isEnabled = await window.midnight.mnLace.isEnabled();
+          if (isEnabled) {
+            connected = true;
+            const state = await connectorAPI.state?.();
+            address = state?.address ?? null;
+            alert("Lace wallet connected successfully.");
+          } else {
+            alert(
+              "Wallet connection was not authorized. Please approve the request in Lace."
+            );
+          }
+          break;
+        }
+        default:
+          alert("Unsupported wallet selection.");
+          return;
       }
     } catch (error) {
-      console.error("An error occurred during wallet connection:", error);
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       alert(`Failed to connect wallet: ${errorMessage}`);
     }
 
@@ -49,22 +64,142 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>PsycheScore - Midnight Network</h1>
+    <>
+      <header>
+        <div className="container">
+          <nav className="navbar">
+            <a href="#" className="logo">
+              <img src={logoWhite} alt="PsycheScore Logo" />
+            </a>
+            <div className="nav-right">
+              <button id="theme-toggle" className="theme-toggle-btn">
+                <i className="fa-solid fa-moon"></i>
+              </button>
+              <a href="#" className="btn btn-secondary">
+                <i className="fa-solid fa-file-lines"></i>
+                Whitepaper
+              </a>
+            </div>
+          </nav>
+        </div>
       </header>
-      <main className="app-main">
-        <WalletCard
-          isConnected={isConnected}
-          walletAddress={walletAddress}
-          onConnect={handleConnect}
-          onDisconnect={handleDisconnect}
-        />
-        {isConnected && (
-          <PsycheScoreDApp walletAddress={walletAddress} />
-        )}
-      </main>
-    </div>
+      <div className="container">
+        <main className="hero-section">
+          <div className="hero-content">
+            <h1>
+              Experience <span className="highlight">PsycheCredit</span> – The
+              decentralized protocol
+            </h1>
+            <p>
+              Unlock powerful AI tools for your business — deploy smart
+              chatbots, automate workflows, analyze data, and more with zero
+              coding. Scalable. Secure. Lightning fast.
+            </p>
+            <div className="cta-buttons">
+              {/* 4. Gắn sự kiện onClick để mở Popup */}
+              {!isConnected ? (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <i className="fa-solid fa-wallet"></i> Connect wallet
+                </button>
+              ) : (
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleDisconnect}
+                >
+                  Disconnect
+                </button>
+              )}
+
+              <a href="#" className="btn btn-secondary">
+                Watch Demo
+              </a>
+            </div>
+            <div style={{ marginTop: "2rem" }}>
+              <WalletCard
+                isConnected={isConnected}
+                walletAddress={walletAddress}
+                onConnect={() => void handleConnect("lace")}
+                onDisconnect={handleDisconnect}
+              />
+            </div>
+          </div>
+        </main>
+
+        <footer>
+          <div className="social-icons">
+            <a href="#">
+              <i className="fab fa-facebook-f"></i>
+            </a>
+            <a href="#">
+              <i className="fab fa-instagram"></i>
+            </a>
+            <a href="#">
+              <i className="fab fa-twitter"></i>
+            </a>
+            <a href="#">
+              <i className="fab fa-telegram"></i>
+            </a>
+          </div>
+          <div className="copyright">
+            <p>&copy; 2025. PsycheScore</p>
+          </div>
+        </footer>
+      </div>
+
+      {isModalOpen && (
+        <div
+          className="wallet-popup-overlay"
+          id="walletPopup"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsModalOpen(false);
+            }
+          }}
+        >
+          <div className="wallet-popup">
+            <div className="popup-header">
+              <h2>Connect Wallet</h2>
+              {/* Nút đóng popup */}
+              <button
+                className="close-btn"
+                onClick={() => setIsModalOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <p className="popup-subheading">Choose how you want to connect</p>
+            <ul className="wallet-list">
+              <li
+                className="wallet-item"
+                onClick={() => void handleConnect("lace")}
+                style={{ cursor: "pointer" }}
+              >
+                <a>
+                  <img src={imgLace} alt="Lace Wallet" />
+                  Lace wallet
+                </a>
+              </li>
+              <li className="wallet-item">
+                <a href="#">
+                  <img src={imgYoroi} alt="Yoroi Wallet" />
+                  Yoroi Wallet
+                </a>
+              </li>
+
+              <li className="wallet-item" style={{ cursor: "not-allowed", opacity: 0.6 }}>
+                <a>
+                  <img src={imgMidnight} alt="Midnight" />
+                  Midnight (coming soon)
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

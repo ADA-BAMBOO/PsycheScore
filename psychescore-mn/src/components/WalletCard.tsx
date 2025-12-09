@@ -1,5 +1,5 @@
 import React from "react";
-import type { WalletCardProps } from "../types";
+import type { WalletCardProps } from "../types/types";
 
 const WalletCard: React.FC<WalletCardProps> = ({
   isConnected,
@@ -25,7 +25,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
             </p>
           </>
         ) : (
-          <p>Please connect your wallet to proceed.</p>
+          <p>Please connect your Lace wallet to proceed.</p>
         )}
       </div>
 
@@ -36,7 +36,7 @@ const WalletCard: React.FC<WalletCardProps> = ({
           </button>
         ) : (
           <button onClick={onConnect} className="connect-btn">
-            Connect Wallet
+            Connect Lace Wallet
           </button>
         )}
       </div>
